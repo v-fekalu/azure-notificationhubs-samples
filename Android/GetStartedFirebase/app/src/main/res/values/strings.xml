@@ -2,4 +2,6 @@
     <string name="app_name">GetStartedNH</string>
     <string name="send_button">Send Notification</string>
     <string name="notification_message_hint">Enter notification message text</string>
+    <string name="notifications_ON">Receive notifications: ON</string>
+    <string name="notifications_OFF">Receive notifications: OFF</string>
 </resources>

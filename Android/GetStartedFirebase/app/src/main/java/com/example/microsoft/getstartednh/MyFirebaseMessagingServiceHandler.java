@@ -10,16 +10,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.firebase.messaging.FirebaseMessagingService;
+
 import com.google.firebase.messaging.RemoteMessage;
+//import com.microsoft.windowsazure.notifications.NotificationsBroadcastReceiver;
+import com.microsoft.windowsazure.notifications.NotificationsHandler;
 
 
-public class MyFirebaseMessagingServiceHandler extends FirebaseMessagingService {
+public class MyFirebaseMessagingServiceHandler extends NotificationsHandler {
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
+    Context ctx;
 
     @Override
     public void onNewToken (String token){
@@ -30,17 +34,42 @@ public class MyFirebaseMessagingServiceHandler extends FirebaseMessagingService 
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        String nhMessage = remoteMessage.getData().get("message");
+    public void onReceive(Context context, Bundle bundle) {
+        ctx = context;
+        String nhMessage = bundle.getString("message");
         showNotification(nhMessage);
         if (MainActivity.isVisible) {
             MainActivity.mainActivity.ToastNotify(nhMessage);
         }
     }
 
+    @Override
+    public void onUnregistered(final Context context, String fcmRegistrationId) {
+        ctx = context;
+
+        final String msg  =  "<Unregistered>";
+
+        showNotification(msg);
+        if (MainActivity.isVisible) {
+            MainActivity.mainActivity.ToastNotify(msg);
+        }
+    }
+
+    @Override
+    public void onRegistered(final Context context, String fcmRegistrationId) {
+        ctx = context;
+
+        final String msg  =  "<Registered: "+fcmRegistrationId+">";
+
+        showNotification(msg);
+        if (MainActivity.isVisible) {
+            MainActivity.mainActivity.ToastNotify(msg);
+        }
+    }
+
     private void showNotification(String msg) {
 
-        Context ctx = getApplicationContext();
+        //Context ctx = getApplicationContext();
 
         Intent intent = new Intent(ctx, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

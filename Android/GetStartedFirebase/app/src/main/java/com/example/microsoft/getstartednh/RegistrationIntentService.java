@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.microsoft.windowsazure.messaging.NotificationHub;
+import com.microsoft.windowsazure.messaging.PnsSpecificRegistrationFactory;
+import com.microsoft.windowsazure.messaging.Registration;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -25,6 +27,7 @@ public class RegistrationIntentService extends IntentService {
 
         try {
 
+            PnsSpecificRegistrationFactory.getInstance().setRegistrationType(Registration.RegistrationType.gcm);
             NotificationHub hub = new NotificationHub(NotificationSettings.HubName,
                     NotificationSettings.HubListenConnectionString, this);
 

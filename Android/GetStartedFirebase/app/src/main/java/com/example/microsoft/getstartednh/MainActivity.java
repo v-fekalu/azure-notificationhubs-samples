@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+import 	android.widget.CompoundButton;
 
 
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,9 @@ import javax.crypto.spec.SecretKeySpec;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ToggleButton;
+
+import com.microsoft.windowsazure.notifications.NotificationsManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivity = this;
 
-        registerWithNotificationHubs();
+        handleNotifications(true);
+
     }
     /**
      * Check the device to make sure it has the Google Play Services APK. If
@@ -171,6 +176,25 @@ public class MainActivity extends AppCompatActivity {
         return token;
     }
 
+    void handleNotifications(boolean on){
+        if(on)
+        {
+            NotificationsManager.handleNotifications(this, NotificationSettings.SenderId, MyFirebaseMessagingServiceHandler.class);
+            registerWithNotificationHubs();
+        }
+        else
+        {
+            NotificationsManager.stopHandlingNotifications(this);
+        }
+    }
+
+    public void doStartStop(View v){
+        //Check, is the toggle is on?
+        boolean on = ((ToggleButton) v).isChecked();
+
+        handleNotifications(on);
+    }
+
     /**
      * Send Notification button click handler. This method parses the
      * DefaultFullSharedAccess connection string and generates a SaS token. The
@@ -207,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                                 generateSasToken(url.toString()));
 
                         // Notification format should be FCM
-                        urlConnection.setRequestProperty("ServiceBusNotification-Format", "fcm");
+                        urlConnection.setRequestProperty("ServiceBusNotification-Format", "gcm");
 
                         // Include any tags
                         // Example below targets 3 specific tags

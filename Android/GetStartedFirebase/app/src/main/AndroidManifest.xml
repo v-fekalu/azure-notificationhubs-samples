@@ -24,9 +24,10 @@
         </service>
 
         <service
-            android:name=".MyFirebaseMessagingServiceHandler">
+            android:name="com.microsoft.windowsazure.notifications.NotificationsBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 

@@ -30,6 +30,19 @@
         android:id="@+id/editTextNotificationMessage"
         android:layout_above="@+id/sendbutton"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp"
+        android:layout_marginBottom="20dp"
         android:hint="@string/notification_message_hint" />
+
+    <ToggleButton
+        android:id="@+id/startstopbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/sendbutton"
+        android:textOn="@string/notifications_ON"
+        android:textOff="@string/notifications_OFF"
+        android:checked="true"
+        android:onClick="doStartStop"
+        />
 </RelativeLayout>
